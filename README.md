@@ -1,2 +1,2 @@
 # vax-visualization
-Visualization on vaccine preventable disease data from WHO
+Visualization of vaccine preventable disease data from WHO
