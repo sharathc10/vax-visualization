@@ -9,7 +9,7 @@ vax_illness=read.csv("./data/vax_illness.csv")
 # create variable with colnames as choice 
 choice_illness <- unique(vax_illness$Illness_Friendly)
 choice_vaccine <- unique(vax_illness$Vaccine)
-
+choice_groupings <- c("Region")
 vax_coverage = read.csv("./data/vaccine coverage.csv")
 choice_regions = c("All", unique(vax_coverage$WHO_REGION))
 #filter vax coverage data to include population
@@ -24,8 +24,9 @@ dtp1_by_region=vax_coverage %>% mutate(WHO_REGION=as.factor(WHO_REGION),Year=as.
 diphtheria = read.csv("./data/diphtheria.csv")
 colnames(diphtheria)[colnames(diphtheria)=="Cname"]="Country"
 diphtheria_by_region_2010_2019 = flatten_illness_data(diphtheria) %>% 
-  mutate(WHO_REGION=as.factor(WHO_REGION),year=as.numeric(year)) %>%  
-  filter(year>=2010) %>% 
-  group_by(WHO_REGION,year) %>% 
+  mutate(WHO_REGION=as.factor(WHO_REGION),Year=as.numeric(Year)) %>%  
+  filter(Year>=2010) %>% 
+  group_by(WHO_REGION,Year) %>% 
   summarise(total_cases=sum(reported_cases,na.rm=T)) 
+all_diphtheria_dtp1=inner_join(diphtheria_by_region_2010_2019 ,dtp1_by_region)
 
