@@ -23,12 +23,32 @@ shinyUI(dashboardPage(
         tabItems(
             tabItem(tabName = "illness",
                     fluidRow(
-                        box(width = 10,plotOutput("illness"))
-
+                        tabBox(width=12,
+                            tabPanel(title="All",plotOutput("illness")),
+                            tabPanel(title="AFR",plotOutput("illnessAFR")),
+                            tabPanel(title="AMR",plotOutput("illnessAMR")),
+                            tabPanel(title="EMR",plotOutput("illnessEMR")),
+                            tabPanel(title="EUR",plotOutput("illnessEUR")),
+                            tabPanel(title="SEAR",plotOutput("illnessSEAR")),
+                            tabPanel(title="WPR",plotOutput("illnessWPR"))
                         )
-                    ),
+                    )
+            ),
             tabItem(tabName = "table",
-                    fluidRow(box(DT::dataTableOutput("table"), width = 12)))
+                    fluidRow(
+                        tabBox(width=12,
+                               tabPanel(title="All", DT::dataTableOutput("table")),
+                               tabPanel(title="AFR", DT::dataTableOutput("tableAFR")),         
+                               tabPanel(title="AMR", DT::dataTableOutput("tableAMR")),         
+                               tabPanel(title="EMR", DT::dataTableOutput("tableEMR")),         
+                               tabPanel(title="EUR", DT::dataTableOutput("tableEUR")),         
+                               tabPanel(title="SEAR", DT::dataTableOutput("tableSEAR")),         
+                               tabPanel(title="WPR", DT::dataTableOutput("tableWPR"))         
+                               
+                        )
+                   
+                    )
+            )
         )
     )
 ))
