@@ -5,7 +5,7 @@ library(shiny)
 library(shinydashboard)
 
 source("helper.R")
-
+country_highest="Afghanistan"
 vax_illness=read.csv("./data/vax_illness.csv")
 
 # create illness and grouping choice
@@ -30,11 +30,11 @@ total_population_by_year = pop %>% group_by(Year) %>% summarise(total_pop=sum(po
 vax_coverage_final = inner_join(vax_coverage,pop) %>% inner_join(.,total_population_by_year) %>% 
   mutate(final_coverage=(Percent_covrage*pop)/total_pop)
 
-dtp_by_region=vax_filter_by_vaccine("DTP1")
-ipv_by_region=vax_filter_by_vaccine("IPV1")
-mcv_by_region=vax_filter_by_vaccine("MCV1")
-rcv_by_region=vax_filter_by_vaccine("RCV2")
-japenc_by_region=vax_filter_by_vaccine("JapEnc") 
+dtp_by_region=vax_group_by_region("DTP1")
+ipv_by_region=vax_group_by_region("IPV1")
+mcv_by_region=vax_group_by_region("MCV1")
+rcv_by_region=vax_group_by_region("RCV1")
+japenc_by_region=vax_group_by_region("JapEnc") 
 
 #illness data by region
 #diphtheria data
@@ -82,23 +82,43 @@ japenc = read.csv("./data/japenc.csv")
 colnames(japenc)[colnames(japenc)=="Cname"]="Country"
 japenc_by_region_2010_2019 = illness_group_by_region(japenc)
 all_japenc=inner_join(japenc_by_region_2010_2019 ,japenc_by_region)
-print(all_japenc)
+
 #hdi related data
 #vax data
 hdi=read_csv("./data/hdi.csv")
 hdi = hdi %>% dplyr::select(-contains("X"))
-hdi = flatten_hdi_file(hdi) %>% mutate(Year=as.numeric(Year))
-
-vax_coverage_hdi = inner_join(vax_coverage_final,hdi) %>% mutate(hdi_level=ifelse(
+hdi = flatten_hdi_file(hdi) %>% mutate(Year=as.numeric(Year)) %>% 
+  mutate(hdi_level=ifelse(
   as.numeric(hdi)>0.8, "Very High Development", ifelse(
     as.numeric(hdi) > 0.7, "High Development", ifelse(
       as.numeric(hdi) > 0.55, "Medium Development", "Low Development"
     )
   )
 ))
-
-vax_coverage_hdi_avg = vax_coverage_hdi %>% filter(!is.na(hdi_level)) %>% group_by(Year,hdi_level) %>%  summarise(avg=mean(final_coverage,na.rm=T)) %>% mutate(hdi_level=as.factor(hdi_level))  
-
-#disease data
+hdi$hdi_level <- factor(hdi$hdi_level, levels = c("Very High Development", "High Development", "Medium Development","Low Development"))
 
 
+vax_coverage_hdi = inner_join(vax_coverage_final,hdi) 
+vax_DTP1_hdi=vax_group_by_hdi("DTP1") 
+vax_IPV1_hdi=vax_group_by_hdi("IPV1") 
+vax_MCV1_hdi=vax_group_by_hdi("MCV1") 
+vax_RCV1_hdi=vax_group_by_hdi("RCV1") 
+vax_JapEnc_hdi=vax_group_by_hdi("JapEnc") 
+
+
+diphtheria_by_hdi_2010_2019 = illness_group_by_hdi(diphtheria,hdi)
+tetanus_by_hdi_2010_2019 = illness_group_by_hdi(tetanus,hdi)
+pertussis_by_hdi_2010_2019 = illness_group_by_hdi(pertussis,hdi)
+polio_by_hdi_2010_2019 = illness_group_by_hdi(polio,hdi)
+measles_by_hdi_2010_2019 = illness_group_by_hdi(measles,hdi)
+rubella_by_hdi_2010_2019 = illness_group_by_hdi(rubella,hdi)
+japenc_by_hdi_2010_2019 = illness_group_by_hdi(japenc,hdi)
+
+
+diphtheria_dtp_hdi=inner_join(vax_DTP1_hdi,diphtheria_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+tetanus_dtp_hdi=inner_join(vax_DTP1_hdi,tetanus_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+pertussis_dtp_hdi=inner_join(vax_DTP1_hdi,pertussis_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+polio_ipv_hdi=inner_join(vax_IPV1_hdi,polio_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+measles_mcv_hdi=inner_join(vax_MCV1_hdi,measles_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+rubella_rcv_hdi=inner_join(vax_RCV1_hdi,rubella_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+japenc_hdi=inner_join(vax_JapEnc_hdi,japenc_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))

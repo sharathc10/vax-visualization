@@ -13,7 +13,7 @@ flatten_hdi_file=function(dat) {
   dat %>%  pivot_longer(year_columns,names_to="Year",values_to="hdi")
 }
 
-vax_filter_by_vaccine=function(vaccine) {
+vax_group_by_region=function(vaccine) {
   return (vax_coverage_final %>% 
             mutate(WHO_REGION=as.factor(WHO_REGION),Year=as.numeric(Year)) %>% 
             filter(Vaccine==vaccine) %>% 
@@ -27,4 +27,30 @@ illness_group_by_region=function(df) {
             filter(Year>=2010) %>% 
             group_by(WHO_REGION,Year) %>% 
             summarise(total_cases=sum(reported_cases,na.rm=T)) )
+}
+
+vax_group_by_hdi=function(vaccine) {
+  return (vax_coverage_hdi %>% 
+            filter(Vaccine==vaccine) %>% 
+            group_by(hdi_level,Year) %>% 
+            summarise(avg=mean(final_coverage,na.rm=T)))
+}
+
+illness_group_by_hdi=function(df,hdi) {
+  return(flatten_illness_data(df) %>% 
+           mutate(WHO_REGION=as.factor(WHO_REGION),Year=as.numeric(Year)) %>%  
+           filter(Year>=2010) %>% 
+           inner_join(.,hdi) %>% 
+           group_by(hdi_level,Year) %>% 
+           summarise(total_cases=sum(reported_cases,na.rm=T)))
+}
+
+plot_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
+  return (ggplot(df, aes(Year, total_cases)) + 
+    geom_bar(data=df,stat="identity") + 
+    geom_line(data=df, aes(y=avg*scaleVal),color="red") + 
+    scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
+    facet_wrap(as.formula(paste("~", facetresponse))) +
+    ggtitle(graphtitle) +
+    labs(x=xlabel,y=ylabel)) 
 }

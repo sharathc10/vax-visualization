@@ -13,8 +13,12 @@ shinyUI(dashboardPage(
         
     ),
     dashboardBody(
+        tags$head(
+            tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+        ),
         tabItems(
             tabItem(tabName = "illness",
+                    h1(verbatimTextOutput("tabHeading")),
                     fluidRow(
                         tabBox(width=12,
                             tabPanel(title="All",plotOutput("illness")),
@@ -25,7 +29,8 @@ shinyUI(dashboardPage(
                             tabPanel(title="SEAR/None",plotOutput("illnessSEAR")),
                             tabPanel(title="WPR/None",plotOutput("illnessWPR"))
                         )
-                    )
+                    ),
+                    h4("Data source: WHO")
             ),
             tabItem(tabName = "table",
                     fluidRow(
