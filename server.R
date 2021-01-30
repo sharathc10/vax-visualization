@@ -77,7 +77,7 @@ shinyServer(function(input, output){
         df=data()
         scaleVal=scale()
         facetresponse = facetresp()
-        plot_vax_disease_graph(
+        plot_all_vax_disease_graph(
             df,
             facetresponse,
             paste0(

@@ -46,11 +46,22 @@ illness_group_by_hdi=function(df,hdi) {
 }
 
 plot_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
-  return (ggplot(df, aes(Year, total_cases)) + 
+  return (ggplot(df, aes(x=factor(Year), total_cases)) + 
     geom_bar(data=df,stat="identity") + 
-    geom_line(data=df, aes(y=avg*scaleVal),color="red") + 
+    geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="red") + 
     scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
     facet_wrap(as.formula(paste("~", facetresponse))) +
     ggtitle(graphtitle) +
     labs(x=xlabel,y=ylabel)) 
+}
+
+plot_all_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
+  return (ggplot(df, aes(x=factor(Year), total_cases)) + 
+            geom_bar(data=df,stat="identity") + 
+            geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="red") + 
+            theme(axis.text.x = element_text(angle = 90)) +
+            scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
+            facet_wrap(as.formula(paste("~", facetresponse))) +
+            ggtitle(graphtitle) +
+            labs(x=xlabel,y=ylabel)) 
 }
