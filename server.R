@@ -1,28 +1,36 @@
-library(DT)
-library(shiny)
-library(dplyr)
-library(ggplot2)
-
 shinyServer(function(input, output){
     
     data <- reactive({
-       if (input$selectedIllness == "Diphtheria") {
+       illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
+       group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
+       if (illness_selected == "Diphtheria" & group_selected=="Region") {
         dataSet <- all_diphtheria_dtp1
-       } else if (input$selectedIllness == "Tetanus") {
+       } else if (illness_selected == "Tetanus" & group_selected=="Region") {
            dataSet <- all_tetanus_dtp1
-       } else if (input$selectedIllness == "Pertussis") {
+       } else if (illness_selected == "Pertussis" & group_selected=="Region") {
            dataSet <- all_pertussis_dtp1
+       } else if (illness_selected == "Polio" & group_selected=="Region") {
+           dataSet <- all_polio_ipv1
+       } else if (illness_selected == "Measles" & group_selected=="Region") {
+           dataSet <- all_measles_mcv1
+       } else if (illness_selected == "Rubella" & group_selected=="Region") {
+           dataSet <- all_rubella_rcv1
+       } else if (illness_selected == "Japanese Enciphelites" & group_selected=="Region") {
+           dataSet <- all_japenc
        }
            
         dataSet
     })
     
     scale <- reactive({
-        if (input$selectedIllness == "Diphtheria") {
+        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
+        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
+        scaleVal=10000
+        if (illness_selected == "Diphtheria" & group_selected=="Region") {
             scaleVal <- 10000
-        } else if (input$selectedIllness == "Tetanus") {
+        } else if (illness_selected == "Tetanus" & group_selected=="Region") {
             scaleVal <- 8000
-        } else if (input$selectedIllness == "Pertussis") {
+        } else if (illness_selected == "Pertussis" & group_selected=="Region") {
             scaleVal <- 40000
         }
         
