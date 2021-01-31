@@ -18,7 +18,7 @@ vax_group_by_region=function(vaccine) {
             mutate(WHO_REGION=as.factor(WHO_REGION),Year=as.numeric(Year)) %>% 
             filter(Vaccine==vaccine) %>% 
             group_by(WHO_REGION,Year) %>% 
-            summarise(avg=mean(final_coverage,na.rm=T)))
+            summarise(avg=min(sum(final_coverage,na.rm=T),0.99)))
 }
 
 illness_group_by_region=function(df) {
@@ -33,7 +33,7 @@ vax_group_by_hdi=function(vaccine) {
   return (vax_coverage_hdi %>% 
             filter(Vaccine==vaccine) %>% 
             group_by(hdi_level,Year) %>% 
-            summarise(avg=mean(final_coverage,na.rm=T)))
+            summarise(avg=min(sum(final_coverage,na.rm=T),0.99)))
 }
 
 illness_group_by_hdi=function(df,hdi) {
@@ -61,7 +61,7 @@ plot_all_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,sc
             geom_bar(data=df,stat="identity",width=0.7,fill="#7FFFD4") + 
             geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="#ff7faa") +
             theme(axis.text.x = element_text(angle = 90)) +
-            scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
+            scale_y_continuous(sec.axis= sec_axis(~./100,name="Vaccine coverage(%)")) +
             facet_wrap(as.formula(paste("~", facetresponse))) +
             ggtitle(graphtitle) +
             labs(x=xlabel,y=ylabel)) 

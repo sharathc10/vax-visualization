@@ -1,5 +1,31 @@
-.main-header .logo {
-  font-family: "Georgia", Times, "Times New Roman", serif;
+.skin-blue .main-header .logo {
+  color: #3d9970;  
+  font-family: "Garamond", serif;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 28px;
+  background-color: rgb(232,245,251);
+}
+.skin-blue .main-header .navbar {
+  background-color: rgb(232,245,251);
+}
+.skin-blue .main-sidebar {
+  background-color: rgb(255,125,125);
+}
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+    background-color: #3d9970;
+    color: rgb(255,255,255);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu a{
+    background-color: rgb(255,125,125);
+    color: rgb(255,255,255);font-weight: bold;
+}
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+    background-color: rgb(232,245,251);
+    color: rgb(0,144,197);
+    font-weight: bold;
 }

@@ -42,16 +42,6 @@ shinyServer(function(input, output){
         illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
         group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
         scaleVal=10000
-        if (illness_selected == "Diphtheria" & group_selected=="Region") {
-            scaleVal <- 10000
-        } else if (illness_selected == "Tetanus" & group_selected=="Region") {
-            scaleVal <- 8000
-        } else if (illness_selected == "Pertussis" & group_selected=="Region") {
-            scaleVal <- 40000
-        } else if (group_selected=="HDI") {
-            scaleVal=100000
-        }
-        
         scaleVal
     })
     
@@ -113,9 +103,9 @@ shinyServer(function(input, output){
         plot_all_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -138,9 +128,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -163,9 +153,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -188,9 +178,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -213,9 +203,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -232,9 +222,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -251,9 +241,9 @@ shinyServer(function(input, output){
         plot_vax_disease_graph(
             df,
             facetresponse,
-            paste0(
+            paste0(paste0(
                 paste0(illness_selected," incidences vs Vaccine coverage by "),
-                group_selected),
+                group_selected),"(source:WHO)"),
             "Year",
             paste0(illness_selected," cases (people count)"),
             scaleVal) 
@@ -443,6 +433,10 @@ shinyServer(function(input, output){
         build_tab_heading=paste0(build_tab_heading,tab_selected)
         build_tab_heading
     })
+    
+    output$tabintroduction <- renderText({ 
+        "Hellow"
+        })
     
     
 })
