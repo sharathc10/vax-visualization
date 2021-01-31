@@ -66,182 +66,36 @@ shinyServer(function(input, output){
     })
     
     highestCountry <- reactive({
-
-        highest_country=highest_cases_illness(diphtheria)$Country
+        highest_country=highest_cases_illness(diphtheria)
         illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-
-        if (illness_selected=="Tetanus") {
-            highest_country=highest_cases_illness(tetanus)$Country
-        } else if (illness_selected=="Japanese Encephilites") {
-            highest_country=highest_cases_illness(japenc)$Country
-        }else if (illness_selected=="Pertussis") {
-            highest_country=highest_cases_illness(pertussis)$Country
-        }else if (illness_selected=="Measles") {
-            highest_country=highest_cases_illness(measles)$Country
-        }else if (illness_selected=="Polio") {
-            highest_country=highest_cases_illness(polio)$Country
-        }else if (illness_selected=="Rubella") {
-            highest_country=highest_cases_illness(rubella)$Country
+        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
+         tab_selected=input$tabset1
+        if (tab_selected=="All") {
+            if (illness_selected=="Tetanus") {
+                highest_country=highest_cases_illness(tetanus)
+            } else if (illness_selected=="Japanese Encephilites") {
+                highest_country=highest_cases_illness(japenc)
+            }else if (illness_selected=="Pertussis") {
+                highest_country=highest_cases_illness(pertussis)
+            }else if (illness_selected=="Measles") {
+                highest_country=highest_cases_illness(measles)
+            }else if (illness_selected=="Polio") {
+                highest_country=highest_cases_illness(polio)
+            }else if (illness_selected=="Rubella") {
+                highest_country=highest_cases_illness(rubella)
+            }
+        } else {
+            if (group_selected=="Region") {
+                region=strsplit(tab_selected,split="/")[[1]][1]
+                print(region)
+                highest_country=filter_highest_cases(illness_selected,group_selected,region)
+            } else {
+                hdi_cat=strsplit(tab_selected,split="/")[[1]][2]
+                hdi_value=map_hdi_value(hdi_cat)
+                highest_country=filter_highest_cases(illness_selected,group_selected,hdi_value)
+            }
         }
         highest_country
-    })
-    
-    highestYear <- reactive({
-        
-        print(input$chartTab)
-        highest_year=highest_cases_illness(diphtheria)$Year
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        
-        if (illness_selected=="Tetanus") {
-            highest_year=highest_cases_illness(tetanus)$Year
-        } else if (illness_selected=="Japanese Encephilites") {
-            highest_year=highest_cases_illness(japenc)$Year
-        }else if (illness_selected=="Pertussis") {
-            highest_year=highest_cases_illness(pertussis)$Year
-        }else if (illness_selected=="Measles") {
-            highest_year=highest_cases_illness(measles)$Year
-        }else if (illness_selected=="Polio") {
-            highest_year=highest_cases_illness(polio)$Year
-        }else if (illness_selected=="Rubella") {
-            highest_year=highest_cases_illness(rubella)$Year
-        }
-        highest_year
-    })
-    
-    highestCountryAFR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"AFR")$Country
-        } else {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"Very High Development")$Country
-        }
-        highest_country
-    })
-    
-    highestYearAFR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"AFR")$Year
-        } else {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"Very High Development")$Year
-        }
-        highest_year
-    })
-    
-    highestCountryAMR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"AMR")$Country
-        } else {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"High Development")$Country
-        }
-        highest_country
-    })
-    
-    highestYearAMR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"AMR")$Year
-        } else {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"High Development")$Year
-        }
-        highest_year
-    })
-    
-    highestCountryEMR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"EMR")$Country
-        } else {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"Medium Development")$Country
-        }
-        highest_country
-    })
-    
-    highestYearEMR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"EMR")$Year
-        } else {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"Medium Development")$Year
-        }
-        highest_year
-    })
-    
-    highestCountryEUR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"EUR")$Country
-        } else {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"Low Development")$Country
-        }
-        highest_country
-    })
-    
-    highestYearEUR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"EUR")$Year
-        } else {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"Low Development")$Year
-        }
-        highest_year
-    })
-    
-    highestCountrySEAR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"SEAR")$Country
-        } 
-        highest_country
-    })
-    
-    highestYearSEAR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"SEAR")$Year
-        } 
-        highest_year
-    })
-    
-    highestCountryWPR <- reactive({
-        highest_country=highest_cases_illness(diphtheria)$Country
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        if (group_selected=="Region") {
-            highest_country=filter_highest_cases(illness_selected,group_selected,"WPR")$Country
-        } else 
-        highest_country
-    })
-    
-    highestYearWPR <- reactive({
-        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
-        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
-        highest_year=highest_cases_illness(diphtheria)$Year
-        if (group_selected=="Region") {
-            highest_year=filter_highest_cases(illness_selected,group_selected,"WPR")$Year
-        } 
-        highest_year
     })
 
     heading <- reactive({
@@ -480,100 +334,114 @@ shinyServer(function(input, output){
     
     output$countryBox <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountry(), icon = icon("hand-o-right"),
+            "Highest cases(%)", highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     output$yearBox <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYear(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxAFR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountryAFR(), icon = icon("hand-o-right"),
+            "Highest cases(%)", highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     output$yearBoxAFR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearAFR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxAMR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountryAMR(), icon = icon("hand-o-right"),
+            "Highest cases(%)",highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     output$yearBoxAMR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearAMR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxEMR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountryEMR(), icon = icon("hand-o-right"),
+            "Highest cases(%)", highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     
     output$yearBoxEMR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearEMR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxSEAR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountrySEAR(), icon = icon("hand-o-right"),
+            "Highest cases(%)",highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     
     output$yearBoxSEAR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearSEAR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxEUR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountryEUR(), icon = icon("hand-o-right"),
+            "Highest cases(%)",highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     output$yearBoxEUR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearEUR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$countryBoxWPR <- renderInfoBox({
         infoBox(
-            "Highest cases", highestCountryWPR(), icon = icon("hand-o-right"),
+            "Highest cases(%)",highestCountry()$Country, icon = icon("hand-o-right"),
             color = "olive"
         )
     })
     output$yearBoxWPR <- renderInfoBox({
         infoBox(
-            "Year of highest cases", highestYearWPR(), icon = icon("calendar", lib = "glyphicon"),
+            "Year of highest cases", highestCountry()$Year, icon = icon("calendar", lib = "glyphicon"),
             color = "yellow"
         )
     })
     
     output$tabHeading <- renderText({
-        paste0(paste0(paste0(strsplit(input$selectedIllness,split="-")[[1]][1]," by "),
-               strsplit(input$selectedIllness,split="-")[[1]][2]))
+        illness_selected = strsplit(input$selectedIllness,split="-")[[1]][1]
+        group_selected = strsplit(input$selectedIllness,split="-")[[1]][2]
+        tab_selected=input$tabset1
+        if (group_selected=="Region") {
+            if (tab_selected !="All") {
+                tab_selected=map_region_value(strsplit(tab_selected,split="/")[[1]][1])
+            }
+        } else {
+            if (tab_selected != "All") {
+                tab_selected=map_hdi_value(strsplit(tab_selected,split="/")[[1]][2])
+            }
+        }
+        build_tab_heading=paste0(illness_selected," by ")
+        build_tab_heading=paste0(build_tab_heading,paste0(group_selected,"-"))
+        build_tab_heading=paste0(build_tab_heading,tab_selected)
+        build_tab_heading
     })
     
     

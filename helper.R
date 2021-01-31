@@ -48,8 +48,8 @@ illness_group_by_hdi=function(df,hdi) {
 plot_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
   return (ggplot(df, aes(x=factor(Year), total_cases)) + 
     theme_bw() +  
-    geom_bar(data=df,stat="identity") + 
-    geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="red") + 
+    geom_bar(data=df,stat="identity",fill="#7FFFD4") + 
+    geom_line(data=df, aes(y=avg*scaleVal,group = 1),size=2,color="#ff7faa") + 
     scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
     ggtitle(graphtitle) +
     labs(x=xlabel,y=ylabel)) 
@@ -58,15 +58,14 @@ plot_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleV
 plot_all_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
   return (ggplot(df, aes(x=factor(Year), total_cases)) + 
             theme_bw() +  
-            geom_bar(data=df,stat="identity",width=0.7) + 
-            geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="red") +
+            geom_bar(data=df,stat="identity",width=0.7,fill="#7FFFD4") + 
+            geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="#ff7faa") +
             theme(axis.text.x = element_text(angle = 90)) +
             scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
             facet_wrap(as.formula(paste("~", facetresponse))) +
             ggtitle(graphtitle) +
             labs(x=xlabel,y=ylabel)) 
-    scale_colour_brewer(type = "seq", palette = "Spectral")
-  
+
 }
 
 highest_cases_illness=function(illnessdf) {
@@ -115,4 +114,25 @@ filter_highest_cases=function(illness,group,groupName) {
       arrange(desc(reported_case_ratio)))[1,] 
   }
   return (highest_row)
+}
+
+map_hdi_value=function(hdi_abbrev) {
+  return (case_when(
+    hdi_abbrev == "VHD" ~ "Very High Development",
+    hdi_abbrev == "HD" ~ "High Development",
+    hdi_abbrev == "MD" ~ "Medium Development",
+    hdi_abbrev == "LD" ~ "Low Development",
+    TRUE ~ "Low Development"
+  ))
+}
+
+map_region_value=function(region_abbrev) {
+  return (case_when(
+    region_abbrev == "AFR" ~ "Africa",
+    region_abbrev == "AMR" ~ "America",
+    region_abbrev == "EUR" ~ "Europe",
+    region_abbrev == "EMR" ~ "Eastern Mediteranean",
+    region_abbrev == "SEAR" ~ "South-East Asia",
+    region_abbrev == "WPR" ~ "Western Pacific"
+    ))
 }

@@ -19,7 +19,10 @@ shinyUI(dashboardPage(
         tabItems(
             tabItem(tabName = "illness",
                     fluidRow(
-                        tabBox(title=textOutput("tabHeading"),width=12,
+                        tabBox(title=textOutput("tabHeading"),
+                               width=12,
+                               id = "tabset1", 
+                               height = "250px",
                             tabPanel(title="All",
                                      infoBoxOutput("countryBox"),tags$style("#countryBox {width:300px;}"),
                                      infoBoxOutput("yearBox"),tags$style("#yearBox {width:300px;}"),
