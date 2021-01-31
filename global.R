@@ -9,6 +9,7 @@ country_highest="Afghanistan"
 vax_illness=read.csv("./data/vax_illness.csv")
 
 # create illness and grouping choice
+
 choice_illness <- unique(vax_illness$Illness_Friendly)
 choice_illness_group=c()
 idx=0;
@@ -122,3 +123,9 @@ polio_ipv_hdi=inner_join(vax_IPV1_hdi,polio_by_hdi_2010_2019) %>% filter(!is.na(
 measles_mcv_hdi=inner_join(vax_MCV1_hdi,measles_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
 rubella_rcv_hdi=inner_join(vax_RCV1_hdi,rubella_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
 japenc_hdi=inner_join(vax_JapEnc_hdi,japenc_by_hdi_2010_2019) %>% filter(!is.na(hdi_level))
+
+#Data for information boxes
+#diphtheria highest case country
+#diphtheria year when highest case occured
+diphtheria_highest=(flatten_illness_data(diphtheria) %>% arrange(desc(reported_cases)))[1,]
+

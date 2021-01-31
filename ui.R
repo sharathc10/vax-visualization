@@ -18,19 +18,40 @@ shinyUI(dashboardPage(
         ),
         tabItems(
             tabItem(tabName = "illness",
-                    h1(verbatimTextOutput("tabHeading")),
                     fluidRow(
-                        tabBox(width=12,
-                            tabPanel(title="All",plotOutput("illness")),
-                            tabPanel(title="AFR/VHD",plotOutput("illnessAFR")),
-                            tabPanel(title="AMR/HD",plotOutput("illnessAMR")),
-                            tabPanel(title="EMR/MD",plotOutput("illnessEMR")),
-                            tabPanel(title="EUR/LD",plotOutput("illnessEUR")),
-                            tabPanel(title="SEAR/None",plotOutput("illnessSEAR")),
-                            tabPanel(title="WPR/None",plotOutput("illnessWPR"))
+                        tabBox(title=textOutput("tabHeading"),width=12,
+                            tabPanel(title="All",
+                                     infoBoxOutput("countryBox"),tags$style("#countryBox {width:300px;}"),
+                                     infoBoxOutput("yearBox"),tags$style("#yearBox {width:300px;}"),
+                                     plotOutput("illness")),
+                            tabPanel(title="AFR/VHD",
+                                     infoBoxOutput("countryBoxAFR"),tags$style("#countryBoxAFR {width:300px;}"),
+                                     infoBoxOutput("yearBoxAFR"),tags$style("#yearBoxAFR {width:300px;}"),
+                                     plotOutput("illnessAFR")),
+                            tabPanel(title="AMR/HD",
+                                     infoBoxOutput("countryBoxAMR"),tags$style("#countryBoxAMR {width:300px;}"),
+                                     infoBoxOutput("yearBoxAMR"),tags$style("#yearBoxAMR {width:300px;}"),
+                                     plotOutput("illnessAMR")),
+                            tabPanel(title="EMR/MD",
+                                     infoBoxOutput("countryBoxEMR"),tags$style("#countryBoxEMR {width:300px;}"),
+                                     infoBoxOutput("yearBoxEMR"),tags$style("#yearBoxEMR {width:300px;}"),
+                                     plotOutput("illnessEMR")),
+                            tabPanel(title="EUR/LD",
+                                     infoBoxOutput("countryBoxEUR"),tags$style("#countryBoxEUR {width:300px;}"),
+                                     infoBoxOutput("yearBoxEUR"),tags$style("#yearBoxEUR {width:300px;}"),
+                                     plotOutput("illnessEUR")),
+                            tabPanel(title="SEAR/None",
+                                     infoBoxOutput("countryBoxSEAR"),tags$style("#countryBoxSEAR {width:300px;}"),
+                                     infoBoxOutput("yearBoxSEAR"),tags$style("#yearBoxSEAR {width:300px;}"),
+                                     plotOutput("illnessSEAR")),
+                            tabPanel(title="WPR/None",
+                                     infoBoxOutput("countryBoxWPR"),tags$style("#countryBoxWPR {width:300px;}"),
+                                     infoBoxOutput("yearBoxWPR"),tags$style("#yearBoxWPR {width:300px;}"),
+                                     plotOutput("illnessWPR"))
                         )
-                    ),
-                    h4("Data source: WHO")
+                    )
+
+                    
             ),
             tabItem(tabName = "table",
                     fluidRow(
