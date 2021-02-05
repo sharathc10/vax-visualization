@@ -11,14 +11,6 @@ vax_illness=read.csv("./data/vax_illness.csv")
 # create illness and grouping choice
 
 choice_illness <- unique(vax_illness$Illness_Friendly)
-choice_illness_group=c()
-idx=0;
-for (illness in choice_illness) {
-  idx=idx+1
-  choice_illness_group[idx]=paste0(illness,"-Region")
-  idx=idx+1
-  choice_illness_group[idx]=paste0(illness,"-HDI")
-}
 
 vax_coverage = read.csv("./data/vaccine coverage.csv")
 
@@ -31,7 +23,7 @@ total_population_by_year = pop %>% group_by(Year) %>% summarise(total_pop=sum(po
 vax_coverage_final = inner_join(vax_coverage,pop) %>% inner_join(.,total_population_by_year) %>% 
   mutate(final_coverage=(Percent_covrage*pop)/total_pop)
 
-dtp_by_region=vax_group_by_region("DTP1")
+dtp_by_region=vax_group_by_region("DTP3")
 ipv_by_region=vax_group_by_region("IPV1")
 mcv_by_region=vax_group_by_region("MCV1")
 rcv_by_region=vax_group_by_region("RCV1")
@@ -100,7 +92,7 @@ hdi$hdi_level <- factor(hdi$hdi_level, levels = c("Very High Development", "High
 
 
 vax_coverage_hdi = inner_join(vax_coverage_final,hdi) 
-vax_DTP1_hdi=vax_group_by_hdi("DTP1") 
+vax_DTP1_hdi=vax_group_by_hdi("DTP3") 
 vax_IPV1_hdi=vax_group_by_hdi("IPV1") 
 vax_MCV1_hdi=vax_group_by_hdi("MCV1") 
 vax_RCV1_hdi=vax_group_by_hdi("RCV1") 

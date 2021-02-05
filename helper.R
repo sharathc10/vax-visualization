@@ -49,22 +49,26 @@ plot_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleV
   return (ggplot(df, aes(x=factor(Year), total_cases)) + 
     theme_bw() +  
     geom_bar(data=df,stat="identity",fill="#7FFFD4") + 
-    geom_line(data=df, aes(y=avg*scaleVal,group = 1),size=2,color="#ff7faa") + 
+    geom_line(data=df, aes(y=avg*scaleVal,group = 1,linetype = "Vaccine coverage"),size=2,color="#ff7faa") + 
     scale_y_continuous(sec.axis= sec_axis(~./100, name="Vaccine coverage(%)")) +
     ggtitle(graphtitle) +
-    labs(x=xlabel,y=ylabel)) 
+    labs(x=xlabel,y=ylabel)+
+    theme(axis.title=element_text(size=16)))  
 }
 
 plot_all_vax_disease_graph=function(df,facetresponse,graphtitle,xlabel,ylabel,scaleVal) {
-  return (ggplot(df, aes(x=factor(Year), total_cases)) + 
+  test_value=100 
+  test=as.formula(paste0("~./",test_value))
+   return (ggplot(df, aes(x=factor(Year), total_cases)) + 
             theme_bw() +  
             geom_bar(data=df,stat="identity",width=0.7,fill="#7FFFD4") + 
-            geom_line(data=df, aes(y=avg*scaleVal,group = 1),color="#ff7faa") +
+            geom_line(data=df, aes(x=factor(Year),y=avg*scaleVal,group = 1,linetype = "Vaccine coverage"),color="#ff7faa") +
             theme(axis.text.x = element_text(angle = 90)) +
             scale_y_continuous(sec.axis= sec_axis(~./100,name="Vaccine coverage(%)")) +
             facet_wrap(as.formula(paste("~", facetresponse))) +
             ggtitle(graphtitle) +
-            labs(x=xlabel,y=ylabel)) 
+            labs(x=xlabel,y=ylabel,color="Legend")+
+            theme(axis.title=element_text(size=16))) 
 
 }
 
